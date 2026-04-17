@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GAMA TT — Designing the Future of Africa</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{
+    --black:#0A0A0A;--white:#FFFFFF;
+    --gold:#C9A84C;--gold-light:#E8C97A;--gold-dark:#8B6914;
+    --gray-100:#F5F5F0;--gray-200:#E8E8E0;--gray-400:#9A9A90;--gray-600:#555550;--gray-800:#232323;--gray-900:#101010;
+    --vignette: radial-gradient(ellipse at center, rgba(10,10,10,0) 60%, rgba(10,10,10,0.95) 100%);
+    --gold-gradient: linear-gradient(90deg, #C9A84C 0%, #E8C97A 50%, #C9A84C 100%);
+    --font-sans:'Inter',sans-serif;--font-serif:'Playfair Display',serif;
+  }
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--font-sans);color:var(--black);background:var(--white);overflow-x:hidden;}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:72px;background:rgba(10,10,10,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,0.2);}
+  .nav-logo{display:flex;align-items:center;gap:12px;}
+  .nav-logo-mark{width:38px;height:38px;background:var(--gold);border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:var(--black);letter-spacing:-0.5px;}
+  .nav-logo-text{color:var(--white);font-size:17px;font-weight:600;letter-spacing:0.5px;}
+  .nav-logo-text span{color:var(--gold);font-weight:300;}
+  .nav-links{display:flex;gap:32px;list-style:none;}
+  .nav-links a{color:rgba(255,255,255,0.75);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.8px;text-transform:uppercase;transition:color 0.2s;}
+  .nav-links a:hover{color:var(--gold);}
+  .nav-cta{background:var(--gold);color:var(--black);padding:9px 22px;border-radius:3px;font-size:13px;font-weight:600;letter-spacing:0.5px;text-decoration:none;transition:background 0.2s;}
+  .nav-cta:hover{background:var(--gold-light);}
+
+  /* SECTIONS */
+  section{width:100%;}
+  .section-inner{max-width:1200px;margin:0 auto;padding:0 5%;}
+
+  /* HERO */
+  #hero{height:100vh;background:var(--black);position:relative;display:flex;align-items:center;overflow:hidden;}
+  .hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0A0A0A 0%,#181818 100%);opacity:1;z-index:0;}
+  .hero-bg::after{content:'';position:absolute;inset:0;background:var(--vignette), var(--gold-gradient);opacity:0.18;mix-blend-mode:screen;pointer-events:none;}
+  .hero-title span{background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-fill-color:transparent;filter:drop-shadow(0 2px 18px rgba(201,168,76,0.18));}
+  .hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0A0A0A 0%,#181818 100%);opacity:1;z-index:0;}
+  .hero-bg::after{content:'';position:absolute;inset:0;background:var(--vignette), var(--gold-gradient);opacity:0.18;mix-blend-mode:screen;pointer-events:none;}
+  .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,0.09) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.09) 1px,transparent 1px);background-size:60px 60px;z-index:1;}
+  .hero-accent{position:absolute;top:20%;right:8%;width:400px;height:400px;border:1px solid rgba(201,168,76,0.10);border-radius:50%;animation:pulse 6s ease-in-out infinite;filter:blur(1px);}
+  .hero-accent2{position:absolute;top:25%;right:12%;width:280px;height:280px;border:1px solid rgba(201,168,76,0.07);border-radius:50%;animation:pulse 6s ease-in-out infinite 1.5s;filter:blur(1.5px);}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:0.5;}50%{transform:scale(1.05);opacity:1;}}
+  .hero-content{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:0 5%;width:100%;}
+  .hero-eyebrow{display:inline-block;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,0.4);padding:6px 16px;border-radius:2px;margin-bottom:28px;}
+  .hero-title{font-family:var(--font-serif);font-size:clamp(42px,6vw,82px);font-weight:700;line-height:1.05;color:var(--white);margin-bottom:16px;position:relative;z-index:2;animation:heroGlow 3s ease-in-out infinite alternate;}
+  .hero-title span{background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-fill-color:transparent;filter:drop-shadow(0 2px 18px rgba(201,168,76,0.18));}
+  @keyframes heroGlow {
+    0% { text-shadow: 0 2px 24px rgba(201,168,76,0.12), 0 1px 0 #fff0; }
+    100% { text-shadow: 0 4px 48px rgba(201,168,76,0.32), 0 1px 0 #fff0; }
+  }
+  .hero-subtitle{font-size:clamp(14px,1.8vw,19px);font-weight:300;color:rgba(255,255,255,0.6);line-height:1.7;max-width:560px;margin-bottom:44px;}
+  .hero-buttons{display:flex;gap:16px;flex-wrap:wrap;}
+  .btn-primary{background:var(--gold-gradient);color:var(--black);padding:14px 32px;border-radius:6px;font-size:15px;font-weight:700;letter-spacing:0.5px;text-decoration:none;box-shadow:0 2px 16px rgba(201,168,76,0.13);border:none;transition:transform 0.18s,box-shadow 0.18s;}
+  .btn-primary:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 6px 32px rgba(201,168,76,0.22);background:var(--gold-light);}
+  .btn-outline{border:2px solid var(--gold);color:var(--gold);padding:14px 32px;border-radius:6px;font-size:15px;font-weight:600;letter-spacing:0.5px;text-decoration:none;background:rgba(255,255,255,0.01);transition:all 0.2s;box-shadow:0 2px 12px rgba(201,168,76,0.07);}
+  .btn-outline:hover{background:var(--gold-gradient);color:var(--black);box-shadow:0 6px 24px rgba(201,168,76,0.18);}
+  .hero-stats{display:flex;gap:48px;margin-top:60px;padding-top:48px;border-top:1px solid rgba(255,255,255,0.1);}
+  .hero-stat-num{font-family:var(--font-serif);font-size:32px;font-weight:700;color:var(--gold);}
+  .hero-stat-label{font-size:12px;color:rgba(255,255,255,0.45);letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
+  .scroll-indicator{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,rgba(201,168,76,0.6),transparent);animation:scrollDown 2s ease-in-out infinite;}
+  @keyframes scrollDown{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);}100%{transform:scaleY(0);transform-origin:bottom;}}
+
+  /* ABOUT */
+  #about{padding:120px 0;background:var(--white);}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+  .about-eyebrow{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+  .about-title{font-family:var(--font-serif);font-size:clamp(28px,3vw,44px);font-weight:700;line-height:1.2;margin-bottom:24px;}
+  .about-text{font-size:16px;line-height:1.8;color:var(--gray-600);margin-bottom:20px;}
+  .about-founder{display:flex;align-items:center;gap:16px;margin-top:36px;padding-top:36px;border-top:1px solid var(--gray-200);}
+  .about-founder-avatar{width:56px;height:56px;border-radius:50%;background:var(--gray-900);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:var(--gold);overflow:hidden;}
+  .about-founder-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+  .about-founder-name{font-weight:600;font-size:15px;}
+  .about-founder-title{font-size:13px;color:var(--gray-400);margin-top:2px;}
+  .about-visual{background:var(--gray-900);border-radius:12px;overflow:hidden;aspect-ratio:4/3;position:relative;display:flex;align-items:center;justify-content:center;}
+  .about-visual-placeholder{text-align:center;color:rgba(255,255,255,0.3);}
+  .about-visual-placeholder p{font-size:13px;margin-top:8px;letter-spacing:1px;}
+  .about-pillars{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px;}
+  .pillar{background:var(--gray-100);border-radius:8px;padding:20px;border-left:3px solid var(--gold);}
+  .pillar-title{font-weight:600;font-size:14px;margin-bottom:6px;}
+  .pillar-text{font-size:13px;color:var(--gray-600);line-height:1.6;}
+
+  /* DIVIDER */
+  .gold-divider{height:2px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:0;}
+
+  /* AUTOMOTIVE */
+  #automotive{padding:120px 0;background:var(--black);}
+  .section-header{text-align:center;margin-bottom:72px;}
+  .section-eyebrow{display:inline-block;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border-bottom:1px solid rgba(201,168,76,0.4);padding-bottom:8px;margin-bottom:20px;}
+  .section-title{font-family:var(--font-serif);font-size:clamp(28px,3.5vw,50px);font-weight:700;line-height:1.15;color:var(--white);}
+  .section-title.dark{color:var(--black);}
+  .section-subtitle{font-size:16px;color:rgba(255,255,255,0.5);max-width:560px;margin:16px auto 0;line-height:1.7;}
+  .section-subtitle.dark{color:var(--gray-600);}
+  .vayo-showcase{display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:center;margin-bottom:80px;}
+  .vayo-visual{background:var(--gray-800);border-radius:12px;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+  .vayo-visual::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(255,255,255,0.03) 20px,rgba(255,255,255,0.03) 40px);}
+  .vayo-label{position:absolute;top:20px;left:20px;background:rgba(0,0,0,0.6);color:var(--gold);font-size:11px;font-weight:600;letter-spacing:2px;padding:6px 12px;border-radius:3px;}
+  .vayo-placeholder{text-align:center;color:rgba(255,255,255,0.4);position:relative;z-index:1;}
+  .vayo-placeholder svg{opacity:0.3;}
+  .vayo-placeholder p{font-size:12px;letter-spacing:1px;margin-top:10px;}
+  .vayo-info-eyebrow{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+  .vayo-info-title{font-family:var(--font-serif);font-size:36px;font-weight:700;color:var(--white);margin-bottom:20px;line-height:1.2;}
+  .vayo-info-text{font-size:15px;line-height:1.8;color:rgba(255,255,255,0.55);margin-bottom:28px;}
+  .vayo-specs{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px;}
+  .spec{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:16px;}
+  .spec-value{font-size:22px;font-weight:700;color:var(--gold);font-family:var(--font-serif);}
+  .spec-label{font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:0.5px;margin-top:4px;}
+  .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .feature-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:28px;transition:border-color 0.3s;}
+  .feature-card:hover{border-color:rgba(201,168,76,0.4);}
+  .feature-icon{width:44px;height:44px;background:rgba(201,168,76,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:20px;}
+  .feature-title{font-weight:600;font-size:15px;color:var(--white);margin-bottom:8px;}
+  .feature-text{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.7;}
+
+  /* ESTATE */
+  #estate{padding:120px 0;background:var(--gray-100);}
+  .estate-hero{border-radius:16px;overflow:hidden;background:var(--black);aspect-ratio:21/9;display:flex;align-items:center;justify-content:center;margin-bottom:80px;position:relative;}
+  .estate-hero-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.2) 100%);z-index:1;}
+  .estate-hero-content{position:relative;z-index:2;padding:0 5%;width:100%;}
+  .estate-hero-bg-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.1);font-size:14px;letter-spacing:2px;text-transform:uppercase;}
+  .estate-tag{display:inline-block;background:rgba(201,168,76,0.15);color:var(--gold);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;border-radius:2px;margin-bottom:20px;}
+  .estate-hero-title{font-family:var(--font-serif);font-size:clamp(32px,5vw,68px);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:16px;}
+  .estate-hero-sub{font-size:16px;color:rgba(255,255,255,0.6);line-height:1.7;max-width:480px;}
+  .estate-overview{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:80px;}
+  .estate-stat{background:var(--white);border-radius:10px;padding:32px 24px;border-bottom:3px solid var(--gold);}
+  .estate-stat-num{font-family:var(--font-serif);font-size:36px;font-weight:700;color:var(--black);margin-bottom:6px;}
+  .estate-stat-label{font-size:13px;color:var(--gray-400);letter-spacing:0.5px;line-height:1.5;}
+  .districts-header{text-align:center;margin-bottom:48px;}
+  .districts-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+  .district-card{background:var(--white);border-radius:12px;overflow:hidden;border:1px solid var(--gray-200);transition:transform 0.3s,box-shadow 0.3s;}
+  .district-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,0.12);}
+  .district-img{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+  .district-img.mutara{background:linear-gradient(135deg,#C9A84C,#E8C97A);}
+  .district-img.kintsugi{background:linear-gradient(135deg,#2C1810,#7B4A2D);}
+  .district-img.rurema{background:linear-gradient(135deg,#1A2A4A,#2D4A7A);}
+  .district-img.ijabiro{background:linear-gradient(135deg,#3A1A4A,#6A3A7A);}
+  .district-img-label{position:absolute;top:16px;left:16px;color:rgba(255,255,255,0.3);font-size:11px;letter-spacing:2px;text-transform:uppercase;}
+  .district-img-icon{font-size:48px;opacity:0.2;}
+  .district-body{padding:28px;}
+  .district-name{font-family:var(--font-serif);font-size:24px;font-weight:700;margin-bottom:8px;}
+  .district-role{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+  .district-desc{font-size:14px;line-height:1.7;color:var(--gray-600);}
+  .district-tag{display:inline-block;background:var(--gray-100);border-radius:3px;padding:4px 10px;font-size:11px;font-weight:600;letter-spacing:0.5px;margin-top:16px;margin-right:6px;color:var(--gray-600);}
+
+  /* VIDEO */
+  #video{padding:100px 0;background:var(--black);}
+  .video-container{border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:#111;display:flex;align-items:center;justify-content:center;position:relative;max-width:900px;margin:0 auto;}
+  .video-placeholder{text-align:center;color:rgba(255,255,255,0.3);}
+  .video-play-btn{width:80px;height:80px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;cursor:pointer;transition:transform 0.2s;}
+  .video-play-btn:hover{transform:scale(1.08);}
+  .video-play-btn svg{fill:var(--black);margin-left:4px;}
+  .video-placeholder p{font-size:14px;letter-spacing:1px;}
+  .video-note{font-size:12px;color:rgba(255,255,255,0.2);margin-top:12px;}
+
+  /* PARTNERSHIP */
+  #partnership{padding:120px 0;background:var(--white);}
+  .partnership-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+  .partnership-visual{background:var(--gray-100);border-radius:12px;padding:48px;display:flex;flex-direction:column;gap:20px;}
+  .p-item{display:flex;align-items:center;gap:20px;background:var(--white);border-radius:8px;padding:20px;border:1px solid var(--gray-200);}
+  .p-item-icon{width:44px;height:44px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;}
+  .p-item-title{font-weight:600;font-size:14px;margin-bottom:4px;}
+  .p-item-sub{font-size:13px;color:var(--gray-400);}
+  .partnership-eyebrow{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+  .partnership-title{font-family:var(--font-serif);font-size:clamp(26px,3vw,40px);font-weight:700;line-height:1.2;margin-bottom:20px;}
+  .partnership-text{font-size:15px;line-height:1.8;color:var(--gray-600);margin-bottom:16px;}
+  .investment-highlight{background:var(--black);color:var(--white);border-radius:10px;padding:32px;margin:28px 0;}
+  .inv-amount{font-family:var(--font-serif);font-size:42px;font-weight:700;color:var(--gold);}
+  .inv-label{font-size:13px;color:rgba(255,255,255,0.5);letter-spacing:1px;text-transform:uppercase;margin-top:6px;}
+  .inv-sub{font-size:14px;color:rgba(255,255,255,0.4);margin-top:16px;line-height:1.6;}
+
+  /* CONTACT */
+  #contact{padding:120px 0;background:var(--black);}
+  .contact-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+  .contact-eyebrow{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+  .contact-title{font-family:var(--font-serif);font-size:clamp(28px,3vw,44px);font-weight:700;color:var(--white);line-height:1.2;margin-bottom:20px;}
+  .contact-text{font-size:15px;color:rgba(255,255,255,0.5);line-height:1.8;}
+  .contact-info{margin-top:40px;display:flex;flex-direction:column;gap:20px;}
+  .contact-item{display:flex;align-items:flex-start;gap:14px;}
+  .contact-item-icon{width:36px;height:36px;background:rgba(201,168,76,0.1);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;}
+  .contact-item-label{font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+  .contact-item-value{font-size:14px;color:var(--white);}
+  .contact-form{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:40px;}
+  .form-row{margin-bottom:20px;}
+  .form-row label{display:block;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:8px;}
+  .form-row input,.form-row select,.form-row textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:12px 16px;color:var(--white);font-size:14px;font-family:var(--font-sans);outline:none;transition:border-color 0.2s;}
+  .form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:var(--gold);}
+  .form-row select option{background:var(--black);}
+  .form-row textarea{resize:vertical;min-height:120px;}
+  .form-submit{width:100%;background:var(--gold);color:var(--black);border:none;padding:14px;border-radius:6px;font-size:14px;font-weight:700;letter-spacing:0.5px;cursor:pointer;transition:background 0.2s;}
+  .form-submit:hover{background:var(--gold-light);}
+
+  /* FOOTER */
+  footer{background:#050505;border-top:1px solid rgba(255,255,255,0.06);padding:48px 0;}
+  .footer-inner{max-width:1200px;margin:0 auto;padding:0 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;}
+  .footer-logo{font-family:var(--font-serif);font-size:20px;font-weight:700;color:var(--white);}
+  .footer-logo span{color:var(--gold);}
+  .footer-links{display:flex;gap:28px;}
+  .footer-links a{font-size:13px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.2s;}
+  .footer-links a:hover{color:var(--gold);}
+  .footer-copy{font-size:12px;color:rgba(255,255,255,0.2);}
+
+  /* RESPONSIVE */
+  @media(max-width:900px){
+    .about-grid,.vayo-showcase,.partnership-grid,.contact-inner,.estate-overview{grid-template-columns:1fr;}
+    .districts-grid{grid-template-columns:1fr;}
+    .features-grid{grid-template-columns:1fr 1fr;}
+    .hero-stats{gap:28px;}
+    .nav-links{display:none;}
+  }
+  @media(max-width:600px){
+    .features-grid{grid-template-columns:1fr;}
+    .estate-overview{grid-template-columns:1fr 1fr;}
+    .vayo-specs{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-mark">GT</div>
+    <div class="nav-logo-text">GAMA <span>TT</span></div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#automotive">VAYO EV</a></li>
+    <li><a href="#estate">iNTORE Estate</a></li>
+    <li><a href="#partnership">Partnership</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Partner With Us</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-accent"></div>
+  <div class="hero-accent2"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Kigali, Rwanda — Est. 2024</div>
+    <h1 class="hero-title">Designing the<br><span>Future</span> of Africa</h1>
+    <p class="hero-subtitle">GAMA TT is a Rwandan innovation company building electric mobility solutions and pioneering sustainable urban development for a cleaner, stronger continent.</p>
+    <div class="hero-buttons">
+      <a href="#automotive" class="btn-primary">Explore VAYO EV</a>
+      <a href="#estate" class="btn-outline">iNTORE Estate</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num">VAYO V1</div>
+        <div class="hero-stat-label">Electric Vehicle</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">$11B</div>
+        <div class="hero-stat-label">Estate Investment</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">4</div>
+        <div class="hero-stat-label">Estate Districts</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">Rwanda</div>
+        <div class="hero-stat-label">Bugesera District</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div>
+        <div class="about-eyebrow">Who We Are</div>
+        <h2 class="about-title">Two Pillars. One Vision for Africa.</h2>
+        <p class="about-text">GAMA TT is an innovation-led company operating at the intersection of sustainable transportation and transformative urban development. We believe Africa's future must be built by Africans — designed for its terrain, its people, and its ambition.</p>
+        <p class="about-text">Through our Automotive division, we are developing the VAYO electric vehicle platform to decarbonize transport across Rwanda and beyond. Through our Architecture & Development division, we are realizing iNTORE Estate — a landmark mixed-use development in Bugesera that will redefine how Rwandans live, work, and thrive.</p>
+        <div class="about-pillars">
+          <div class="pillar">
+            <div class="pillar-title">Automotive Division</div>
+            <div class="pillar-text">VAYO electric vehicles built for African terrain and logistics.</div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-title">Architecture & Development</div>
+            <div class="pillar-text">iNTORE Estate — visionary urban design for Rwanda's future.</div>
+          </div>
+        </div>
+        <div class="about-founder">
+          <div class="about-founder-avatar"><img src="assets/images/gama.jpg" alt="Gama Allan profile photo" /></div>
+          <div>
+            <div class="about-founder-name">NTARE GAMA Allan</div>
+            <div class="about-founder-title">Founder & CEO, GAMA TT</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="about-visual">
+          <img src="assets/images/LANE2586.jpg" alt="GAMA TT Team or Company" style="width:100%;height:100%;object-fit:cover;" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-divider"></div>
+
+<!-- AUTOMOTIVE -->
+<section id="automotive">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">Automotive Division</div>
+      <h2 class="section-title">VAYO — Electric Mobility<br>Built for Africa</h2>
+      <p class="section-subtitle">Replacing fuel dependency with stable, cost-efficient electric transport for farmers, cooperatives, and logistics operators across Rwanda.</p>
+    </div>
+
+    <div class="vayo-showcase">
+        <div class="vayo-visual">
+          <div class="vayo-label">VAYO V1 — PROTOTYPE PHASE</div>
+          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Q6P4HidjrUA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="position:absolute;top:0;left:0;"></iframe>
+        </div>
+      <div>
+        <div class="vayo-info-eyebrow">Our First Model</div>
+        <div class="vayo-info-title">VAYO V1</div>
+        <p class="vayo-info-text">A compact electric cargo vehicle engineered for Rwanda's diverse terrain — from mountain roads to urban deliveries. Designed to eliminate fuel costs and bring financial stability to smallholder farmers and SMEs.</p>
+        <div class="vayo-specs">
+          <div class="spec"><div class="spec-value">Electric</div><div class="spec-label">Powertrain</div></div>
+          <div class="spec"><div class="spec-value">Dual</div><div class="spec-label">Terrain: Urban + Rural</div></div>
+          <div class="spec"><div class="spec-value">Low</div><div class="spec-label">Operating Cost</div></div>
+          <div class="spec"><div class="spec-value">V1 + EV3</div><div class="spec-label">Models in Dev.</div></div>
+        </div>
+        <a href="#contact" class="btn-primary" style="display:inline-block;">Request Partnership Info</a>
+      </div>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-title">Zero Fuel Dependency</div>
+        <div class="feature-text">Eliminates exposure to fuel price volatility, giving operators predictable monthly costs and improved margins.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏔</div>
+        <div class="feature-title">Built for African Terrain</div>
+        <div class="feature-text">Engineered for Rwanda's mountainous geography — durable chassis, high load capacity, reliable across all conditions.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌱</div>
+        <div class="feature-title">Climate Impact</div>
+        <div class="feature-text">Each VAYO V1 deployment measurably reduces CO₂ emissions, contributing to Rwanda's clean transport transition.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🚜</div>
+        <div class="feature-title">Agricultural Focus</div>
+        <div class="feature-text">Designed for coffee and tea cooperative logistics — improving profitability across Rwanda's agricultural value chain.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔧</div>
+        <div class="feature-title">Low Maintenance</div>
+        <div class="feature-text">Fewer moving parts than combustion vehicles means reduced downtime and lower long-term cost of ownership.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📦</div>
+        <div class="feature-title">Scalable Platform</div>
+        <div class="feature-text">VAYO V1 is one model of a growing platform — with electric tricycles and heavier cargo variants in development.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-divider"></div>
+
+<!-- ESTATE -->
+<section id="estate">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">Architecture & Development</div>
+      <h2 class="section-title dark">iNTORE Estate</h2>
+      <p class="section-subtitle dark">A landmark $11 billion mixed-use development in Bugesera District, Rwanda — envisioned across four distinct districts and a 6–7 year development horizon.</p>
+    </div>
+
+    <!-- Hero Banner -->
+    <div class="estate-hero">
+        <img class="estate-hero-bg-placeholder" src="assets/images/RWANDA AT NYT.png" alt="Estate Aerial" style="width:100%;height:100%;object-fit:cover;opacity:0.5;" />
+        <div class="estate-hero-overlay"></div>
+      <div class="estate-hero-content">
+        <div class="estate-tag">Bugesera District, Rwanda</div>
+        <div class="estate-hero-title">iNTORE<br>Estate</div>
+        <p class="estate-hero-sub">A vision of sustainable, world-class urban living on Rwandan soil — built for the next generation of Africans.</p>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="estate-overview">
+      <div class="estate-stat">
+        <div class="estate-stat-num">$11B</div>
+        <div class="estate-stat-label">Total Development<br>Investment Target</div>
+      </div>
+      <div class="estate-stat">
+        <div class="estate-stat-num">4</div>
+        <div class="estate-stat-label">Distinct<br>Districts</div>
+      </div>
+      <div class="estate-stat">
+        <div class="estate-stat-num">6–7 yr</div>
+        <div class="estate-stat-label">Development<br>Horizon</div>
+      </div>
+      <div class="estate-stat">
+        <div class="estate-stat-num">Bugesera</div>
+        <div class="estate-stat-label">Location,<br>Rwanda</div>
+      </div>
+    </div>
+
+    <!-- Districts -->
+    <div class="districts-header">
+      <div class="section-eyebrow" style="color:var(--gold-dark);">The Four Districts</div>
+      <h3 class="section-title dark" style="font-size:clamp(22px,2.5vw,36px);">Each District, A World Unto Itself</h3>
+    </div>
+
+    <div class="districts-grid">
+
+      <div class="district-card">
+        <div class="district-img mutara">
+          <div class="district-img-label">District 01</div>
+          <img src="assets/images/MUTARA 2.0.png" alt="Mutara District" style="width:100%;height:100%;object-fit:cover;" />
+        </div>
+        <div class="district-body">
+          <div class="district-role">District 01</div>
+          <div class="district-name">MUTARA</div>
+          <p class="district-desc">A district rooted in nature and sustainability — drawing inspiration from Rwanda's lush northern highlands. MUTARA will feature eco-residential zones and community parks designed to bring residents into harmony with the natural landscape.</p>
+          <span class="district-tag">Residential</span>
+          <!-- Removed green tag as requested -->
+          <span class="district-tag">Sustainability</span>
+        </div>
+      </div>
+
+      <div class="district-card">
+        <div class="district-img kintsugi">
+          <div class="district-img-label">District 02</div>
+          <img src="assets/images/d.png" alt="Kintsugi District" style="width:100%;height:100%;object-fit:cover;" />
+        </div>
+        <div class="district-body">
+          <div class="district-role">District 02</div>
+          <div class="district-name">KINTSUGI</div>
+          <p class="district-desc">Named after the Japanese art of repairing with gold — KINTSUGI is a district that celebrates heritage, beauty, and resilience. Designed as a cultural and artisan hub, it will house galleries, creative studios, boutique hospitality, and high-end mixed-use spaces.</p>
+          <span class="district-tag">Culture</span>
+          <span class="district-tag">Hospitality</span>
+          <span class="district-tag">Luxury Mixed-Use</span>
+        </div>
+      </div>
+
+      <div class="district-card">
+        <div class="district-img rurema">
+          <div class="district-img-label">District 03</div>
+          <img src="assets/images/RWANDA-GROUND VIEW.png" alt="Rurema District" style="width:100%;height:100%;object-fit:cover;" />
+        </div>
+        <div class="district-body">
+          <div class="district-role">District 03</div>
+          <div class="district-name">RUREMA</div>
+          <p class="district-desc">The commercial and innovation heart of iNTORE Estate. RUREMA will be home to technology parks, business hubs, financial services, and smart infrastructure — positioning Bugesera as a regional engine for economic activity and entrepreneurship.</p>
+          <span class="district-tag">Commerce</span>
+          <span class="district-tag">Tech & Innovation</span>
+          <span class="district-tag">Business Hub</span>
+        </div>
+      </div>
+
+      <div class="district-card">
+        <div class="district-img ijabiro">
+          <div class="district-img-label">District 04</div>
+          <img src="assets/images/8.png" alt="Ijabiro District" style="width:100%;height:100%;object-fit:cover;" />
+        </div>
+        <div class="district-body">
+          <div class="district-role">District 04</div>
+          <div class="district-name">IJABIRO</div>
+          <p class="district-desc">IJABIRO — meaning "inspiration" in Kinyarwanda — will be the social and civic heart of the estate. Designed around education, wellness, civic gathering spaces, and youth development, IJABIRO will cultivate the next generation of African leaders and thinkers.</p>
+          <span class="district-tag">Education</span>
+          <span class="district-tag">Wellness</span>
+          <span class="district-tag">Civic Spaces</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section id="video">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">See the Vision</div>
+      <h2 class="section-title">iNTORE Estate — The Film</h2>
+      <p class="section-subtitle">Watch the full concept presentation for iNTORE Estate, narrated by Founder & CEO Ntare Gama Allan.</p>
+    </div>
+    <div class="video-container">
+      <!--
+        TO ADD YOUR VIDEO: Replace this entire div with:
+        <iframe width="100%" height="100%" src="assets/videos/iNTORE_Estate.mp4"
+          frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen style="position:absolute;top:0;left:0;"></iframe>
+        and add style="position:relative;" to .video-container
+      -->
+      <iframe width="100%" height="100%" src="https://www.youtube.com/embed/EsRY357sim0?si=qxZCs5HtIdVciA3E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="position:absolute;top:0;left:0;"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERSHIP -->
+<section id="partnership">
+  <div class="section-inner">
+    <div class="partnership-grid">
+      <div>
+        <div class="partnership-eyebrow">Global Collaboration</div>
+        <h2 class="partnership-title">We Are Seeking World-Class Partners</h2>
+        <p class="partnership-text">iNTORE Estate is in its early development phase and represents one of the most ambitious real estate and urban development projects on the African continent. We are actively seeking global partners — investors, developers, architects, infrastructure specialists, and sustainability experts — to join us in building something historic.</p>
+        <p class="partnership-text">Whether you bring capital, expertise, technology, or strategic networks, GAMA TT offers a genuine co-creation opportunity in a high-growth market with strong government alignment and visionary leadership.</p>
+        <div class="investment-highlight">
+          <div class="inv-amount">$11 Billion</div>
+          <div class="inv-label">Total Development Target</div>
+          <div class="inv-sub">Staged investment across a 6–7 year build-out in Bugesera District, Rwanda — one of East Africa's fastest-growing economic zones.</div>
+        </div>
+        <a href="#contact" class="btn-primary" style="display:inline-block;">Enquire About Partnership</a>
+      </div>
+      <div>
+        <div class="partnership-visual">
+          <div class="p-item">
+            <div class="p-item-icon">🏗</div>
+            <div>
+              <div class="p-item-title">Development Partners</div>
+              <div class="p-item-sub">Real estate developers, urban planners, construction firms</div>
+            </div>
+          </div>
+          <div class="p-item">
+            <div class="p-item-icon">💼</div>
+            <div>
+              <div class="p-item-title">Institutional Investors</div>
+              <div class="p-item-sub">Impact funds, sovereign wealth, private equity</div>
+            </div>
+          </div>
+          <div class="p-item">
+            <div class="p-item-icon">⚡</div>
+            <div>
+              <div class="p-item-title">EV & Clean Tech Partners</div>
+              <div class="p-item-sub">Battery suppliers, drivetrain engineers, charging infrastructure</div>
+            </div>
+          </div>
+          <div class="p-item">
+            <div class="p-item-icon">🌍</div>
+            <div>
+              <div class="p-item-title">Government & NGOs</div>
+              <div class="p-item-sub">Development agencies, climate finance, multilaterals</div>
+            </div>
+          </div>
+          <div class="p-item">
+            <div class="p-item-icon">🎓</div>
+            <div>
+              <div class="p-item-title">Research & Academic Institutions</div>
+              <div class="p-item-sub">Universities, innovation labs, policy think tanks</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-inner">
+      <div>
+        <div class="contact-eyebrow">Get In Touch</div>
+        <h2 class="contact-title">Let's Build the Future Together</h2>
+        <p class="contact-text">Whether you're interested in investing in iNTORE Estate, partnering on VAYO EV development, or exploring collaboration opportunities — we want to hear from you.</p>
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-item-icon">📍</div>
+            <div>
+              <div class="contact-item-label">Location</div>
+              <div class="contact-item-value">Kigali, Rwanda</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">🏗</div>
+            <div>
+              <div class="contact-item-label">Estate Site</div>
+              <div class="contact-item-value">Bugesera District, Rwanda</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">👤</div>
+            <div>
+              <div class="contact-item-label">Founder & CEO</div>
+              <div class="contact-item-value">NTARE GAMA Allan</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <form class="contact-form" action="/contact" method="POST">
+          <div class="form-row">
+            <label>Your Name</label>
+            <input type="text" name="name" placeholder="Full name" required />
+          </div>
+          <div class="form-row">
+            <label>Organisation</label>
+            <input type="text" name="organisation" placeholder="Company or institution" />
+          </div>
+          <div class="form-row">
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="your@email.com" required />
+          </div>
+          <div class="form-row">
+            <label>Area of Interest</label>
+            <select name="area" required>
+              <option value="">Select one</option>
+              <option>iNTORE Estate — Investment</option>
+              <option>iNTORE Estate — Development Partnership</option>
+              <option>VAYO EV — Technology Partnership</option>
+              <option>VAYO EV — Distribution / Procurement</option>
+              <option>General Collaboration</option>
+              <option>Media & Press</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>Message</label>
+            <textarea name="message" placeholder="Tell us about yourself and how you'd like to collaborate…" required></textarea>
+          </div>
+          <button class="form-submit" type="submit">Send Message →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">GAMA <span>TT</span></div>
+    <div class="footer-links">
+      <a href="#about">About</a>
+      <a href="#automotive">VAYO EV</a>
+      <a href="#estate">iNTORE Estate</a>
+      <a href="#partnership">Partner</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="footer-copy">© 2026 GAMA TT. Kigali, Rwanda. All rights reserved.</div>
+  </div>
+</footer>
+
+</body>
+</html>
