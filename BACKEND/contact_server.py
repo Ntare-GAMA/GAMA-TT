@@ -1,89 +1,98 @@
-
-# --- Imports ---
-from flask import Flask, request, jsonify, send_from_directory
-import pathlib
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+from flask import Flask, request, send_from_directory
+import mysql.connector
 import os
+from datetime import datetime
 
-# --- Flask App ---
-app = Flask(__name__)
+app = Flask(__name__, static_folder='.')
 
-# --- Static File Routes ---
+# -------------------------------------------------------
+# DATABASE CONFIG — fill in your SmarterASP.NET MySQL details
+# (found in your hosting control panel under MySQL Databases)
+# -------------------------------------------------------
+DB_CONFIG = {
+    'host':     'mysql5045.site4now.net',          # usually localhost on SmarterASP.NET
+    'user':     'ac8302_intare',
+    'password': 'Zxcvbnm@12',
+    'database': 'db_ac8302_intare'
+}
+
+
+def save_to_db(name, organisation, email, area, message):
+    conn = mysql.connector.connect(**DB_CONFIG)
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS contacts (
+            id           INT AUTO_INCREMENT PRIMARY KEY,
+            name         VARCHAR(255),
+            organisation VARCHAR(255),
+            email        VARCHAR(255),
+            area         VARCHAR(255),
+            message      TEXT,
+            submitted_at DATETIME
+        )
+    """)
+    cursor.execute("""
+        INSERT INTO contacts (name, organisation, email, area, message, submitted_at)
+        VALUES (%s, %s, %s, %s, %s, %s)
+    """, (name, organisation, email, area, message, datetime.now()))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+
+def save_to_file(name, organisation, email, area, message):
+    """Fallback: write submission to a plain-text log."""
+    log_path = os.path.join(os.path.dirname(__file__), 'contacts_log.txt')
+    with open(log_path, 'a', encoding='utf-8') as f:
+        f.write(
+            f"{datetime.now().isoformat()} | {name} | {organisation} "
+            f"| {email} | {area} | {message}\n"
+        )
+
+
 @app.route('/')
-def serve_index():
-    project_root = pathlib.Path(app.root_path).parent
-    return send_from_directory(str(project_root), 'index.html')
+def index():
+    return send_from_directory(os.path.dirname(__file__), 'index.html')
 
-@app.route('/assets/<path:filename>')
-def serve_assets(filename):
-    project_root = pathlib.Path(app.root_path).parent
-    assets_dir = project_root / 'assets'
-    return send_from_directory(str(assets_dir), filename)
 
-@app.route('/<path:filename>')
-def serve_static(filename):
-    project_root = pathlib.Path(app.root_path).parent
-    return send_from_directory(str(project_root), filename)
-
-# --- Email Configuration ---
-EMAIL_ADDRESS = 'intoreestate@gmail.com'  # Your receiving email
-EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')  # Set this as an environment variable for security
-SMTP_SERVER = 'smtp.gmail.com'
-SMTP_PORT = 587
-
-# --- Contact Route ---
 @app.route('/contact', methods=['POST'])
 def contact():
-    data = request.form
-    name = data.get('name')
-    organisation = data.get('organisation')
-    email = data.get('email')
-    area = data.get('area')
-    message = data.get('message')
+    name         = request.form.get('name', '').strip()
+    organisation = request.form.get('organisation', '').strip()
+    email        = request.form.get('email', '').strip()
+    area         = request.form.get('area', '').strip()
+    message      = request.form.get('message', '').strip()
 
-    # Compose email
-    subject = f'New Contact Form Submission from {name}'
-    body = f"""
-    Name: {name}
-    Organisation: {organisation}
-    Email: {email}
-    Area of Interest: {area}
-    Message: {message}
-    """
-    msg = MIMEMultipart()
-    msg['From'] = EMAIL_ADDRESS
-    msg['To'] = EMAIL_ADDRESS
-    msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
-
+    # Try MySQL first; fall back to file if DB isn't configured yet
     try:
-        if not EMAIL_PASSWORD:
-            raise Exception('EMAIL_PASSWORD environment variable is not set.')
-        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-        server.starttls()
-        server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-        server.sendmail(EMAIL_ADDRESS, EMAIL_ADDRESS, msg.as_string())
-        server.quit()
-        return jsonify({'success': True, 'message': 'Message sent successfully!'}), 200
-    except Exception as e:
-        return jsonify({'success': False, 'message': str(e)}), 500
+        save_to_db(name, organisation, email, area, message)
+    except Exception:
+        save_to_file(name, organisation, email, area, message)
 
-# --- MySQL Database (optional, only if mysql-connector-python is installed) ---
-try:
-    import mysql.connector
-    DB_CONFIG = {
-        'host': 'mysql5045.site4now.net',
-        'user': 'ac8302_intare',
-        'password': 'Zxcvbnm@12',
-        'database': 'db_ac8302_intare'
-    }
-    def get_db_connection():
-        conn = mysql.connector.connect(**DB_CONFIG)
-        return conn
-except ImportError:
-    print('mysql-connector-python is not installed. Database functions will not work.')
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="refresh" content="4;url=/" />
+  <title>Message Sent — GAMA TT</title>
+  <style>
+    *{{margin:0;padding:0;box-sizing:border-box;}}
+    body{{font-family:'Inter',sans-serif;background:#0A0A0A;color:#fff;
+          display:flex;align-items:center;justify-content:center;min-height:100vh;}}
+    .card{{text-align:center;padding:48px 60px;border:1px solid rgba(201,168,76,0.3);border-radius:12px;}}
+    h2{{font-size:28px;color:#C9A84C;margin-bottom:12px;}}
+    p{{color:rgba(255,255,255,0.6);line-height:1.7;}}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Thank you, {name}!</h2>
+    <p>Your message has been received.<br/>We'll be in touch soon.<br/><br/>
+       Redirecting you back in a moment…</p>
+  </div>
+</body>
+</html>"""
+
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
